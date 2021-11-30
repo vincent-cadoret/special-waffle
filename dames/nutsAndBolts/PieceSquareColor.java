@@ -1,4 +1,4 @@
-package atelier2.nutsAndBolts;
+package jeux_dames.nutsAndBolts;
 
 
 

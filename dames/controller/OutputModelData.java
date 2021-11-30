@@ -1,15 +1,15 @@
-package atelier2.controller;
+package jeux_dames.controller;
 
 import java.io.Serializable;
 
-import atelier2.nutsAndBolts.PieceSquareColor;
+import jeux_dames.nutsAndBolts.PieceSquareColor;
 
 /**
  * @author francoise.perrin
  * 
- * Objet créé par le Model dans méthode MoveCapturePromote()
- * à destination du Controller qui en extrait les données pour créer
- * l'objet InputViewModel à destination de la View
+ * Objet crï¿½ï¿½ par le Model dans mï¿½thode MoveCapturePromote()
+ * ï¿½ destination du Controller qui en extrait les donnï¿½es pour crï¿½er
+ * l'objet InputViewModel ï¿½ destination de la View
  * 
  */
 public class OutputModelData<T> implements Serializable{

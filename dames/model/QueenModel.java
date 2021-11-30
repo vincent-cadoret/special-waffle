@@ -1,21 +1,18 @@
-package atelier2.model;
+package jeux_dames.model;
 
 
-import java.util.LinkedList;
-import java.util.List;
-
-import atelier2.nutsAndBolts.PieceSquareColor;
+import jeux_dames.nutsAndBolts.PieceSquareColor;
 /**
  * @author francoiseperrin
  *
- *le mode de déplacement et de prise de la reine est différent de celui du pion
+ *le mode de dï¿½placement et de prise de la reine est diffï¿½rent de celui du pion
  */
 public class QueenModel extends AbstractPieceModel {
 	public QueenModel(Coord coord, PieceSquareColor pieceColor) {
 		super(coord, pieceColor);
 	}
 
-	//Vérifie si la pièce peut se déplacer ou non sur la case où l'utilisateur clique
+	//Vï¿½rifie si la piï¿½ce peut se dï¿½placer ou non sur la case oï¿½ l'utilisateur clique
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture) {
 		boolean ret = false;

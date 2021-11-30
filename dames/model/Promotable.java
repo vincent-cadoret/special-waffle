@@ -1,10 +1,10 @@
-package atelier2.model;
+package jeux_dames.model;
 
 public interface Promotable {
 	
 	/**
-	 * @return true si le pion noir est arrivé à la ligne 1
-	 * ou si le pion blanc est arrivé à la ligne MAX
+	 * @return true si le pion noir est arrivï¿½ ï¿½ la ligne 1
+	 * ou si le pion blanc est arrivï¿½ ï¿½ la ligne MAX
 	 */
 	public boolean isPromotable();
 	

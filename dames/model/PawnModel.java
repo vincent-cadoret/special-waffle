@@ -1,10 +1,7 @@
-package atelier2.model;
+package jeux_dames.model;
 
 
-import java.util.LinkedList;
-import java.util.List;
-
-import atelier2.nutsAndBolts.PieceSquareColor;
+import jeux_dames.nutsAndBolts.PieceSquareColor;
 
 public class PawnModel extends AbstractPieceModel implements Promotable{
 	private Coord coord;
@@ -23,7 +20,7 @@ public class PawnModel extends AbstractPieceModel implements Promotable{
 		int ligDistance = targetCoord.getLigne() - this.getLigne();
 		int deltaLig = (int) Math.signum(ligDistance);
 
-		// Cas d'un déplacement en diagonale
+		// Cas d'un dï¿½placement en diagonale
 		if (Math.abs(colDistance) == Math.abs(ligDistance)){
 
 			// sans prise
@@ -40,20 +37,15 @@ public class PawnModel extends AbstractPieceModel implements Promotable{
 		return ret;
 	}
 
-	public boolean isPromotable()
-	{
+	public boolean isPromotable() {
 		boolean ret = false;
-		if(this.getPieceColor() == PieceSquareColor.WHITE)
-		{
-			if(this.getLigne() == 10)
-			{
+		if(this.getPieceColor() == PieceSquareColor.WHITE) {
+			if(this.getLigne() == 10) {
 				ret = true;
 			}
 		}
-		if (this.getPieceColor() == PieceSquareColor.BLACK)
-		{
-			if(this.getLigne() == 1)
-			{
+		if (this.getPieceColor() == PieceSquareColor.BLACK) {
+			if(this.getLigne() == 1) {
 				ret = true;
 			}
 		}

@@ -1,8 +1,8 @@
-package atelier2.controller;
+package jeux_dames.controller;
 
-import atelier2.gui.View;
-import atelier2.model.BoardGame;
-import atelier2.model.Coord;
+import jeux_dames.gui.View;
+import jeux_dames.model.BoardGame;
+import jeux_dames.model.Coord;
 
 /**
  * @author francoise.perrin

@@ -1,6 +1,6 @@
-package atelier2.model;
+package jeux_dames.model;
 
-import atelier2.nutsAndBolts.PieceSquareColor;
+import jeux_dames.nutsAndBolts.PieceSquareColor;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,9 +53,9 @@ public class AbstractPieceModel implements PieceModel {
         int deltaLig = (int) Math.signum(ligDistance);
         int deltaCol = (int) Math.signum(colDistance);
 
-        // Vérif déplacement en diagonale
+        // Vï¿½rif dï¿½placement en diagonale
         if (Math.abs(colDistance) == Math.abs(ligDistance)){
-            // recherche coordonnées des cases traversées
+            // recherche coordonnï¿½es des cases traversï¿½es
             for (int i = 1; i < Math.abs(colDistance); i++) {
                 Coord coord = new Coord((char) (initCol + i*deltaCol), initLig + i*deltaLig);
                 coordsOnItinery.add(coord);

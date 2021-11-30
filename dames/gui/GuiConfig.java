@@ -1,4 +1,4 @@
-package atelier2.gui;
+package jeux_dames.gui;
 
 import javafx.scene.paint.Color;
 

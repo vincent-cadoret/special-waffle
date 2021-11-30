@@ -1,6 +1,6 @@
-package atelier2.gui;
+package jeux_dames.gui;
 
-import atelier2.nutsAndBolts.PieceSquareColor;
+import jeux_dames.nutsAndBolts.PieceSquareColor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 /**
  * @author francoise.perrin
  * 
- * Cette classe permet de donner une image aux pièces
+ * Cette classe permet de donner une image aux piï¿½ces
  *
  */
 

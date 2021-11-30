@@ -1,7 +1,7 @@
-package atelier2.model;
+package jeux_dames.model;
 
 
-import atelier2.nutsAndBolts.PieceSquareColor;
+import jeux_dames.nutsAndBolts.PieceSquareColor;
 
 /**
  * @author francoise.perrin
@@ -10,7 +10,7 @@ import atelier2.nutsAndBolts.PieceSquareColor;
  */
 public class ModelConfig {
 
-	// les coordonnées des pièces nécessaires à  la création des pièces
+	// les coordonnï¿½es des piï¿½ces nï¿½cessaires ï¿½ la crï¿½ation des piï¿½ces
 	public final  static Coord[] BLACK_PIECE_COORDS = new Coord[] {
 			new Coord('b',10), new Coord('d',10), new Coord('f',10), new Coord('h',10), new Coord('j',10),
 			new Coord('a',9), new Coord('c',9), new Coord('e',9), new Coord('g',9), new Coord('i',9),
