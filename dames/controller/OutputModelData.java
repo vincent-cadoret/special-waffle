@@ -1,48 +1,44 @@
-package atelier2.controller;
+package dames.controller;
+
+import dames.nutsAndBolts.PieceSquareColor;
 
 import java.io.Serializable;
 
-import atelier2.nutsAndBolts.PieceSquareColor;
-
 /**
  * @author francoise.perrin
- * 
- * Objet créé par le Model dans méthode MoveCapturePromote()
- * à destination du Controller qui en extrait les données pour créer
- * l'objet InputViewModel à destination de la View
- * 
+ * <p>
+ * Objet crï¿½ï¿½ par le Model dans mï¿½thode MoveCapturePromote()
+ * ï¿½ destination du Controller qui en extrait les donnï¿½es pour crï¿½er
+ * l'objet InputViewModel ï¿½ destination de la View
  */
-public class OutputModelData<T> implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
-	public boolean isMoveDone = false;
-	public T capturedPieceCoord = null;
-	public T promotedPieceCoord = null;
-	public PieceSquareColor promotedPieceColor = null;
-	
-	
-	public OutputModelData(
-			boolean isMoveDone, 
-			T capturedPieceCoord,
-			T promotedPieceCoord,
-			PieceSquareColor promotedPieceColor) {
-		super();
-		this.isMoveDone = isMoveDone;
-		this.capturedPieceCoord = capturedPieceCoord;
-		this.promotedPieceCoord = promotedPieceCoord;
-		this.promotedPieceColor = promotedPieceColor;
-	}
+public class OutputModelData<T> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public boolean isMoveDone = false;
+    public T capturedPieceCoord = null;
+    public T promotedPieceCoord = null;
+    public PieceSquareColor promotedPieceColor = null;
 
 
-	@Override
-	public String toString() {
-		return "DataAfterMove [isMoveDone=" + isMoveDone + ", capturedPieceIndex=" + capturedPieceCoord
-				+ ", promotedPieceIndex=" + promotedPieceCoord + ", promotedPieceColor=" + promotedPieceColor + "]";
-	}
+    public OutputModelData(
+            boolean isMoveDone,
+            T capturedPieceCoord,
+            T promotedPieceCoord,
+            PieceSquareColor promotedPieceColor) {
+        super();
+        this.isMoveDone = isMoveDone;
+        this.capturedPieceCoord = capturedPieceCoord;
+        this.promotedPieceCoord = promotedPieceCoord;
+        this.promotedPieceColor = promotedPieceColor;
+    }
 
 
-	
+    @Override
+    public String toString() {
+        return "DataAfterMove [isMoveDone=" + isMoveDone + ", capturedPieceIndex=" + capturedPieceCoord
+                + ", promotedPieceIndex=" + promotedPieceCoord + ", promotedPieceColor=" + promotedPieceColor + "]";
+    }
 
-	
+
 }

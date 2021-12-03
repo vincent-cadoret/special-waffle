@@ -1,10 +1,9 @@
-package atelier2.nutsAndBolts;
-
+package dames.nutsAndBolts;
 
 
 public enum PieceSquareColor {
 
-	WHITE,
-	BLACK
+    WHITE,
+    BLACK
 
 }

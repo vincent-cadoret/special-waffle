@@ -1,6 +1,6 @@
-package atelier2.gui;
+package dames.gui;
 
-import atelier2.controller.InputViewData;
+import dames.controller.InputViewData;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -11,87 +11,85 @@ import javafx.scene.layout.Pane;
 
 /**
  * @author francoise.perrin
- * 
- * Cette classe est la fenêtre du jeu de dames
- * Elle délègue a un objet Board la gestion de l'affichage du damier
+ * <p>
+ * Cette classe est la fenï¿½tre du jeu de dames
+ * Elle dï¿½lï¿½gue a un objet Board la gestion de l'affichage du damier
  * et affiche les axes le long du damier
- * 
  */
 
 public class View extends BorderPane {
 
-	// le damier composé de carrés noirs et blancs
-	// sur lesquels sont positionnés des pièces noires ou blanches
-	Pane board ;
+    // le damier composï¿½ de carrï¿½s noirs et blancs
+    // sur lesquels sont positionnï¿½s des piï¿½ces noires ou blanches
+    Pane board;
 
-	public View (EventHandler<MouseEvent> clicListener) {
-		super();
+    public View(EventHandler<MouseEvent> clicListener) {
+        super();
 
-		// les cases et le pièces sur le damier seront écoutées par l'objet
-		// passé en paramètre au constructeur
-		board = new Board(clicListener);
-
-		
-		// création d'un fond d'écran qui contient le damier + les axes 
-		BorderPane checkersBoard = new BorderPane();	
-
-		// la taille du damier est fonction de taille de la Scene
-		board.prefWidthProperty().bind(this.widthProperty());
-		board.prefHeightProperty().bind(this.heightProperty());
-
-		// ajout du damier au centre du fond d'écran
-		checkersBoard.setCenter(board);
-
-		// ajout des axes sur les cotés du damier
-		checkersBoard.setTop(createHorizontalAxis());
-		checkersBoard.setBottom(createHorizontalAxis());
-		checkersBoard.setLeft(createVerticalAxis());
-		checkersBoard.setRight(createVerticalAxis());
-
-		// ajout du fond d'écran à la vue
-		this.setCenter(checkersBoard);
+        // les cases et le piï¿½ces sur le damier seront ï¿½coutï¿½es par l'objet
+        // passï¿½ en paramï¿½tre au constructeur
+        board = new Board(clicListener);
 
 
-		
-	}
+        // crï¿½ation d'un fond d'ï¿½cran qui contient le damier + les axes
+        BorderPane checkersBoard = new BorderPane();
 
-	///////////////////////////////////////////////////////////////////////////////////// 
-	// Méthode invoquée depuis le Controller pour propager les déplacements
-	// effectués sur le model sur la vue
-	/////////////////////////////////////////////////////////////////////////////////////
-	
-	public void actionOnGui(InputViewData<Integer> dataToRefreshView) {
-		((Board)this.board).actionOnGui(dataToRefreshView);
-		
-	}
-	
-	//////////////////////////////////////////////////////////////////////////
-	
+        // la taille du damier est fonction de taille de la Scene
+        board.prefWidthProperty().bind(this.widthProperty());
+        board.prefHeightProperty().bind(this.heightProperty());
 
-	private GridPane createHorizontalAxis() {
-		GridPane pane = new GridPane();
-		pane.prefWidthProperty().bind(this.widthProperty());
-		for (char c = 'a'; c<='j'; c++){
-			Label label1 = new Label(String.valueOf(c));
-			label1.setAlignment(Pos.CENTER);
-			label1.prefWidthProperty().bind(pane.prefWidthProperty().divide(GuiConfig.SIZE));
-			pane.add(label1, c-'a', 0);
-		}
-		return pane;
-	}
+        // ajout du damier au centre du fond d'ï¿½cran
+        checkersBoard.setCenter(board);
 
-	private GridPane createVerticalAxis() {
-		GridPane pane = new GridPane();
-		pane.prefHeightProperty().bind(this.heightProperty());
-		for (int c = 10; c>=1; c--){
-			Label label1 = new Label(String.valueOf(c));
-			label1.prefHeightProperty().bind(pane.prefHeightProperty().divide(GuiConfig.SIZE));
-			pane.add(label1, 0, 10-c+1);
-		}
-		return pane;
-	}
+        // ajout des axes sur les cotï¿½s du damier
+        checkersBoard.setTop(createHorizontalAxis());
+        checkersBoard.setBottom(createHorizontalAxis());
+        checkersBoard.setLeft(createVerticalAxis());
+        checkersBoard.setRight(createVerticalAxis());
 
-	
+        // ajout du fond d'ï¿½cran ï¿½la vue
+        this.setCenter(checkersBoard);
+
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // Mï¿½thode invoquï¿½e depuis le Controller pour propager les dï¿½placements
+    // effectuï¿½s sur le model sur la vue
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    public void actionOnGui(InputViewData<Integer> dataToRefreshView) {
+        ((Board) this.board).actionOnGui(dataToRefreshView);
+
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+
+
+    private GridPane createHorizontalAxis() {
+        GridPane pane = new GridPane();
+        pane.prefWidthProperty().bind(this.widthProperty());
+        for (char c = 'a'; c <= 'j'; c++) {
+            Label label1 = new Label(String.valueOf(c));
+            label1.setAlignment(Pos.CENTER);
+            label1.prefWidthProperty().bind(pane.prefWidthProperty().divide(GuiConfig.SIZE));
+            pane.add(label1, c - 'a', 0);
+        }
+        return pane;
+    }
+
+    private GridPane createVerticalAxis() {
+        GridPane pane = new GridPane();
+        pane.prefHeightProperty().bind(this.heightProperty());
+        for (int c = 10; c >= 1; c--) {
+            Label label1 = new Label(String.valueOf(c));
+            label1.prefHeightProperty().bind(pane.prefHeightProperty().divide(GuiConfig.SIZE));
+            pane.add(label1, 0, 10 - c + 1);
+        }
+        return pane;
+    }
+
+
 }
 
 

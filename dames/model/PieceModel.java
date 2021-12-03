@@ -1,51 +1,52 @@
-package atelier2.model;
+package dames.model;
 
+
+import dames.nutsAndBolts.PieceSquareColor;
 
 import java.util.List;
 
-import atelier2.nutsAndBolts.PieceSquareColor;
-
 public interface PieceModel {
-	
-	
-	/**
-	 * @return the coord
-	 */
-	public char getColonne() ;
-	public int getLigne() ;
-	
-	/**
-	 * @param coord
-	 * @return true si la pièce est aux coordonnées passées en paramètre
-	 */
-	public boolean hasThisCoord(Coord coord);
-	
-	/**
-	 * @param coord the coord to set
-	 * le déplacement d'une pièce change ses coordonnées
-	 */
-	public void move(Coord coord);
 
 
-	/**
-	 * @return the pieceColor
-	 */
-	public PieceSquareColor getPieceColor() ;
-	
-	
-	/**
-	 * @param targetCoord
-	 * @param isPieceToCapture
-	 * @return true si le déplacement est légal
-	 */
-	public boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture);
+    /**
+     * @return the coord
+     */
+    char getColonne();
 
-	/**
-	 * @param targetCoord
-	 * @return liste des coordonnées des cases traversées par itinéraire de déplacement
-	 */
-	public List<Coord> getCoordsOnItinerary(Coord targetCoord);
+    int getLigne();
 
-	
+    /**
+     * @param coord
+     * @return true si la piï¿½ce est aux coordonnï¿½es passï¿½es en paramï¿½tre
+     */
+    boolean hasThisCoord(Coord coord);
+
+    /**
+     * @param coord the coord to set
+     *              le dï¿½placement d'une piï¿½ce change ses coordonnï¿½es
+     */
+    void move(Coord coord);
+
+
+    /**
+     * @return the pieceColor
+     */
+    PieceSquareColor getPieceColor();
+
+
+    /**
+     * @param targetCoord
+     * @param isPieceToCapture
+     * @return true si le dï¿½placement est lï¿½gal
+     */
+    boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture);
+
+    /**
+     * @param targetCoord
+     * @return liste des coordonnï¿½es des cases traversï¿½es par itinï¿½raire de dï¿½placement
+     */
+    List<Coord> getCoordsOnItinerary(Coord targetCoord);
+
+
 }
 

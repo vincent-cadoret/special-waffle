@@ -1,245 +1,236 @@
-package atelier2.model;
+package dames.model;
 
+
+import dames.controller.OutputModelData;
+import dames.nutsAndBolts.PieceSquareColor;
 
 import java.util.List;
 
-import atelier2.controller.OutputModelData;
-import atelier2.gui.GuiFactory;
-import atelier2.nutsAndBolts.PieceSquareColor;
-
 /**
  * @author francoise.perrin
- *
- * Cette classe gère les aspects métiers du jeu de dame
- * indépendamment de toute vue
- *
- * Elle délègue à son objet ModelImplementor 
+ * <p>
+ * Cette classe gï¿½re les aspects mï¿½tiers du jeu de dame
+ * indï¿½pendamment de toute vue
+ * <p>
+ * Elle dï¿½lï¿½gue ï¿½ son objet ModelImplementor
  * le stockage des PieceModel dans une collection
- *
- * Les pièces sont capables de se déplacer d'une case en diagonale 
+ * <p>
+ * Les piï¿½ces sont capables de se dï¿½placer d'une case en diagonale
  * si la case de destination est vide
- * ou de 2 cases en diagonale s'il existe une pièce
- * du jeu opposé à  prendre sur le trajet
- * Ces tests sont délégués aux PieceModel
- *
- * Les pièces sont des pions, les prises sont gérées 
- * les rafles ne sont pas gérées, les dames ne sont pas gérées
- *
- * N'est pas géré le fait que lorsqu'une prise est possible
- * une autre pièce ne doit pas être jouée
- *
+ * ou de 2 cases en diagonale s'il existe une piï¿½ce
+ * du jeu opposï¿½ ï¿½ prendre sur le trajet
+ * Ces tests sont dï¿½lï¿½guï¿½s aux PieceModel
+ * <p>
+ * Les piï¿½ces sont des pions, les prises sont gï¿½rï¿½es
+ * les rafles ne sont pas gï¿½rï¿½es, les dames ne sont pas gï¿½rï¿½es
+ * <p>
+ * N'est pas gï¿½rï¿½ le fait que lorsqu'une prise est possible
+ * une autre piï¿½ce ne doit pas ï¿½tre jouï¿½e
  */
 public class Model implements BoardGame<Coord> {
 
-	private PieceSquareColor currentGamerColor;	// couleur du joueur courant
+    private PieceSquareColor currentGamerColor;    // couleur du joueur courant
 
-	private ModelImplementor implementor;		// Cet objet sait communiquer avec les PieceModel
+    private final ModelImplementor implementor;        // Cet objet sait communiquer avec les PieceModel
 
-	public Model() {
-		super();
-		this.implementor = new ModelImplementor();
-		this.currentGamerColor = ModelConfig.BEGIN_COLOR;
+    public Model() {
+        super();
+        this.implementor = new ModelImplementor();
+        this.currentGamerColor = ModelConfig.BEGIN_COLOR;
 
-		System.out.println(this);
-	}
+        System.out.println(this);
+    }
 
-	@Override
-	public String toString() {
-		return implementor.toString();
-	}
-
-
-
-	/**
-	 * Actions potentielles sur le model : move, capture, promotion pion, rafles
-	 */
-	@Override
-	public OutputModelData<Coord> moveCapturePromote(Coord toMovePieceCoord, Coord targetSquareCoord) {
-
-		OutputModelData<Coord> outputModelData = null;
-		boolean isMoveDone = false;
-		Coord toCapturePieceCoord = null;
-		Coord toPromotePieceCoord = null;
-		PieceSquareColor toPromotePieceColor = null;
-
-		// Si la pièce est déplaçable (couleur du joueur courant et case arrivée disponible)
-		if (this.isPieceMoveable(toMovePieceCoord, targetSquareCoord)) {
-
-			// S'il n'existe pas plusieurs pièces sur le chemin
-			if (this.isThereMaxOnePieceOnItinerary(toMovePieceCoord, targetSquareCoord)) {
-
-				//Recherche coord de l'éventuelle pièce à prendre
-				toCapturePieceCoord = this.getToCapturePieceCoord(toMovePieceCoord, targetSquareCoord);
-
-				// si le déplacement est légal (en diagonale selon algo pion ou dame)
-				boolean isPieceToCapture = toCapturePieceCoord != null;
-				if (this.isMovePiecePossible(toMovePieceCoord, targetSquareCoord, isPieceToCapture)) {
-
-					// déplacement effectif de la pièce
-					this.movePiece(toMovePieceCoord, targetSquareCoord);
-					isMoveDone = true;
-
-					// suppression effective de la pièce prise 
-					this.remove(toCapturePieceCoord);
-
-					// promotion éventuelle de la pièce après déplacement 
-					if (isPiecePromotable(targetSquareCoord))
-					{
-						this.isPiecePromotable(targetSquareCoord);
-						toPromotePieceCoord = targetSquareCoord;
-						toPromotePieceColor = this.currentGamerColor;
-					}
-
-					// S'il n'y a pas eu de prise
-					// ou si une rafle n'est pas possible alors changement de joueur
-					if (true) {
-						// TODO : Test à changer atelier 4
-						this.switchGamer();
-					}
-					else
-					{
-
-					}
-				}
-			}
-		}
-		System.out.println(this);
-
-		// Constitution objet de données avec toutes les infos nécessaires à la view
-		outputModelData = new OutputModelData<Coord>(
-				isMoveDone,
-				toCapturePieceCoord,
-				toPromotePieceCoord,
-				toPromotePieceColor);
-
-		return outputModelData;
-
-	}
-
-	/**
-	 * @param toMovePieceCoord
-	 * @param targetSquareCoord
-	 * @return true si la PieceModel à déplacer est de la couleur du joueur courant 
-	 * et que les coordonnées d'arrivées soient dans les limites du tableau
-	 * et qu'il n'y ait pas de pièce sur la case d'arrivée
-	 */
-	private boolean isPieceMoveable(Coord toMovePieceCoord, Coord targetSquareCoord) {
-		boolean bool = false;
+    @Override
+    public String toString() {
+        return implementor.toString();
+    }
 
 
-		bool = 	this.implementor.isPiecehere(toMovePieceCoord)
-				&& this.implementor.getPieceColor(toMovePieceCoord) == this.currentGamerColor
-				&& Coord.coordonnees_valides(targetSquareCoord)
-				&& !this.implementor.isPiecehere(targetSquareCoord);
+    /**
+     * Actions potentielles sur le model : move, capture, promotion pion, rafles
+     */
+    @Override
+    public OutputModelData<Coord> moveCapturePromote(Coord toMovePieceCoord, Coord targetSquareCoord) {
 
-		return bool;
-	}
+        OutputModelData<Coord> outputModelData = null;
+        boolean isMoveDone = false;
+        Coord toCapturePieceCoord = null;
+        Coord toPromotePieceCoord = null;
+        PieceSquareColor toPromotePieceColor = null;
 
-	private boolean isPiecePromotable(Coord targetCoord)
-	{
-		return this.implementor.promotePiece(targetCoord);
-	}
+        // Si la piï¿½ce est dï¿½plaï¿½able (couleur du joueur courant et case arrivï¿½e disponible)
+        if (this.isPieceMoveable(toMovePieceCoord, targetSquareCoord)) {
 
-	/**
-	 * @param toMovePieceCoord
-	 * @param targetSquareCoord
-	 * @return true s'il n'existe qu'1 seule pièce à prendre d'une autre couleur sur la trajectoire
-	 * ou pas de pièce à prendre
-	 */
-	private boolean isThereMaxOnePieceOnItinerary(Coord toMovePieceCoord, Coord targetSquareCoord) {
-		boolean isThereMaxOnePieceOnItinerary = false;
+            // S'il n'existe pas plusieurs piï¿½ces sur le chemin
+            if (this.isThereMaxOnePieceOnItinerary(toMovePieceCoord, targetSquareCoord)) {
 
-		List<Coord> coordsOnItinerary = this.implementor.getCoordsOnItinerary(toMovePieceCoord, targetSquareCoord);
+                //Recherche coord de l'ï¿½ventuelle piï¿½ce ï¿½ prendre
+                toCapturePieceCoord = this.getToCapturePieceCoord(toMovePieceCoord, targetSquareCoord);
 
-		if (coordsOnItinerary != null) {
+                // si le dï¿½placement est lï¿½gal (en diagonale selon algo pion ou dame)
+                boolean isPieceToCapture = toCapturePieceCoord != null;
+                if (this.isMovePiecePossible(toMovePieceCoord, targetSquareCoord, isPieceToCapture)) {
 
-			int count = 0;
-			Coord potentialToCapturePieceCoord = null;
-			for (Coord coordOnItinerary : coordsOnItinerary) {
-				if (this.implementor.isPiecehere(coordOnItinerary)) {
-					count++;
-					potentialToCapturePieceCoord = coordOnItinerary;
-				}
-			}
-			// Il n'existe qu'1 seule pièce à prendre d'une autre couleur sur la trajectoire
-			if (count == 0
-					|| (count == 1 && this.currentGamerColor !=
-					this.implementor.getPieceColor(potentialToCapturePieceCoord))) {
-				isThereMaxOnePieceOnItinerary = true;
-			}
-		}
+                    // dï¿½placement effectif de la piï¿½ce
+                    this.movePiece(toMovePieceCoord, targetSquareCoord);
+                    isMoveDone = true;
 
-		return isThereMaxOnePieceOnItinerary;
+                    // suppression effective de la piï¿½ce prise
+                    this.remove(toCapturePieceCoord);
 
+                    // promotion ï¿½ventuelle de la piï¿½ce aprï¿½s dï¿½placement
+                    if (isPiecePromotable(targetSquareCoord)) {
+                        this.isPiecePromotable(targetSquareCoord);
+                        toPromotePieceCoord = targetSquareCoord;
+                        toPromotePieceColor = this.currentGamerColor;
+                    }
 
-	}
+                    // S'il n'y a pas eu de prise
+                    // ou si une rafle n'est pas possible alors changement de joueur
+                    if (true) {
+                        // TODO : Test ï¿½ changer atelier 4
+                        this.switchGamer();
+                    } else {
 
-	/**
-	 * @param toMovePieceCoord
-	 * @param targetSquareCoord
-	 * @return les coord de la pièce à prendre, null sinon
-	 */
-	private Coord getToCapturePieceCoord(Coord toMovePieceCoord, Coord targetSquareCoord) {
-		Coord toCapturePieceCoord = null;
-		List<Coord> coordsOnItinerary = this.implementor.getCoordsOnItinerary(toMovePieceCoord, targetSquareCoord);
+                    }
+                }
+            }
+        }
+        System.out.println(this);
 
-		if (coordsOnItinerary != null) {
+        // Constitution objet de donnï¿½es avec toutes les infos nï¿½cessaires ï¿½ la view
+        outputModelData = new OutputModelData<Coord>(
+                isMoveDone,
+                toCapturePieceCoord,
+                toPromotePieceCoord,
+                toPromotePieceColor);
 
-			int count = 0;
-			Coord potentialToCapturePieceCoord = null;
-			for (Coord coordOnItinerary : coordsOnItinerary) {
-				if (this.implementor.isPiecehere(coordOnItinerary)) {
-					count++;
-					potentialToCapturePieceCoord = coordOnItinerary;
-				}
-			}
-			// Il n'existe qu'1 seule pièce à prendre d'une autre couleur sur la trajectoire
-			if (count == 0
-					|| (count == 1 && this.currentGamerColor !=
-					this.implementor.getPieceColor(potentialToCapturePieceCoord))) {
-				toCapturePieceCoord = potentialToCapturePieceCoord;
-			}
-		}
+        return outputModelData;
 
-		return toCapturePieceCoord;
-	}
+    }
 
-	/**
-	 * @param
-	 * @param
-	 * @param isPieceToCapture
-	 * @return true si le déplacement est légal
-	 * (s'effectue en diagonale, avec ou sans prise)
-	 * La PieceModel qui se trouve aux coordonnées passées en paramètre 
-	 * est capable de répondre à cette question (par l'intermédiare du ModelImplementor)
-	 */
-	private boolean isMovePiecePossible(Coord toMovePieceCoord, Coord targetSquareCoord, boolean isPieceToCapture) {
-		return this.implementor.isMovePieceOk(toMovePieceCoord, targetSquareCoord, isPieceToCapture ) ;
-	}
-
-	/**
-	 * @param toMovePieceCoord
-	 * @param targetSquareCoord
-	 * Déplacement effectif de la PieceModel
-	 */
-	private void movePiece(Coord toMovePieceCoord, Coord targetSquareCoord) {
-		this.implementor.movePiece(toMovePieceCoord, targetSquareCoord);
-	}
-
-	/**
-	 * @param toCapturePieceCoord
-	 * Suppression effective de la pièce capturée
-	 */
-	private void remove(Coord toCapturePieceCoord) {
-		this.implementor.removePiece(toCapturePieceCoord);
-	}
+    /**
+     * @param toMovePieceCoord
+     * @param targetSquareCoord
+     * @return true si la PieceModel ï¿½ dï¿½placer est de la couleur du joueur courant
+     * et que les coordonnï¿½es d'arrivï¿½es soient dans les limites du tableau
+     * et qu'il n'y ait pas de piï¿½ce sur la case d'arrivï¿½e
+     */
+    private boolean isPieceMoveable(Coord toMovePieceCoord, Coord targetSquareCoord) {
+        boolean bool = false;
 
 
-	private void switchGamer() {
-		this.currentGamerColor = (PieceSquareColor.WHITE).equals(this.currentGamerColor) ?
-				PieceSquareColor.BLACK : PieceSquareColor.WHITE;
+        bool = this.implementor.isPiecehere(toMovePieceCoord)
+                && this.implementor.getPieceColor(toMovePieceCoord) == this.currentGamerColor
+                && Coord.coordonnees_valides(targetSquareCoord)
+                && !this.implementor.isPiecehere(targetSquareCoord);
 
-	}
+        return bool;
+    }
+
+    private boolean isPiecePromotable(Coord targetCoord) {
+        return this.implementor.promotePiece(targetCoord);
+    }
+
+    /**
+     * @param toMovePieceCoord
+     * @param targetSquareCoord
+     * @return true s'il n'existe qu'1 seule piï¿½ce ï¿½ prendre d'une autre couleur sur la trajectoire
+     * ou pas de piï¿½ce ï¿½ prendre
+     */
+    private boolean isThereMaxOnePieceOnItinerary(Coord toMovePieceCoord, Coord targetSquareCoord) {
+        boolean isThereMaxOnePieceOnItinerary = false;
+
+        List<Coord> coordsOnItinerary = this.implementor.getCoordsOnItinerary(toMovePieceCoord, targetSquareCoord);
+
+        if (coordsOnItinerary != null) {
+
+            int count = 0;
+            Coord potentialToCapturePieceCoord = null;
+            for (Coord coordOnItinerary : coordsOnItinerary) {
+                if (this.implementor.isPiecehere(coordOnItinerary)) {
+                    count++;
+                    potentialToCapturePieceCoord = coordOnItinerary;
+                }
+            }
+            // Il n'existe qu'1 seule piï¿½ce ï¿½ prendre d'une autre couleur sur la trajectoire
+            if (count == 0
+                    || (count == 1 && this.currentGamerColor !=
+                    this.implementor.getPieceColor(potentialToCapturePieceCoord))) {
+                isThereMaxOnePieceOnItinerary = true;
+            }
+        }
+
+        return isThereMaxOnePieceOnItinerary;
+
+
+    }
+
+    /**
+     * @param toMovePieceCoord
+     * @param targetSquareCoord
+     * @return les coord de la piï¿½ce ï¿½ prendre, null sinon
+     */
+    private Coord getToCapturePieceCoord(Coord toMovePieceCoord, Coord targetSquareCoord) {
+        Coord toCapturePieceCoord = null;
+        List<Coord> coordsOnItinerary = this.implementor.getCoordsOnItinerary(toMovePieceCoord, targetSquareCoord);
+
+        if (coordsOnItinerary != null) {
+
+            int count = 0;
+            Coord potentialToCapturePieceCoord = null;
+            for (Coord coordOnItinerary : coordsOnItinerary) {
+                if (this.implementor.isPiecehere(coordOnItinerary)) {
+                    count++;
+                    potentialToCapturePieceCoord = coordOnItinerary;
+                }
+            }
+            // Il n'existe qu'1 seule piï¿½ce ï¿½ prendre d'une autre couleur sur la trajectoire
+            if (count == 0
+                    || (count == 1 && this.currentGamerColor !=
+                    this.implementor.getPieceColor(potentialToCapturePieceCoord))) {
+                toCapturePieceCoord = potentialToCapturePieceCoord;
+            }
+        }
+
+        return toCapturePieceCoord;
+    }
+
+    /**
+     * @param
+     * @param
+     * @param isPieceToCapture
+     * @return true si le dï¿½placement est lï¿½gal
+     * (s'effectue en diagonale, avec ou sans prise)
+     * La PieceModel qui se trouve aux coordonnï¿½es passï¿½es en paramï¿½tre
+     * est capable de rï¿½pondre ï¿½cette question (par l'intermï¿½diare du ModelImplementor)
+     */
+    private boolean isMovePiecePossible(Coord toMovePieceCoord, Coord targetSquareCoord, boolean isPieceToCapture) {
+        return this.implementor.isMovePieceOk(toMovePieceCoord, targetSquareCoord, isPieceToCapture);
+    }
+
+    /**
+     * @param toMovePieceCoord
+     * @param targetSquareCoord Dï¿½placement effectif de la PieceModel
+     */
+    private void movePiece(Coord toMovePieceCoord, Coord targetSquareCoord) {
+        this.implementor.movePiece(toMovePieceCoord, targetSquareCoord);
+    }
+
+    /**
+     * @param toCapturePieceCoord Suppression effective de la piï¿½ce capturï¿½e
+     */
+    private void remove(Coord toCapturePieceCoord) {
+        this.implementor.removePiece(toCapturePieceCoord);
+    }
+
+
+    private void switchGamer() {
+        this.currentGamerColor = (PieceSquareColor.WHITE).equals(this.currentGamerColor) ?
+                PieceSquareColor.BLACK : PieceSquareColor.WHITE;
+
+    }
 
 
 }
